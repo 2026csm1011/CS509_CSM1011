@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
         run_floyd_warshall_task(filename);
     } 
     else if (choice == 3) {
-        // Generates exact sizes required by the rubric[cite: 1]
+        // Generates exact sizes required by the rubric
         int bfSizes[] = {10, 100, 10000, 50000, 100000};
         for (int i = 0; i < 5; i++) {
             generateBellmanFordGraph(bfSizes[i], "bf_" + intToString(bfSizes[i]) + ".txt");

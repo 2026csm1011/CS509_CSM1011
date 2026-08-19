@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <chrono>
 #include "../header/csr.hpp"
 #include "../header/algorithm.hpp"
 
@@ -46,8 +48,8 @@ int main()
             cout << "Graph loaded successfully! (V = " << graph.V << ", E = " << graph.E << ")\n\n";
 
             if (choice == 1 || choice == 3) 
-            {
-                Kruskal(graph);
+            {    
+                Kruskal(graph);  
             }
             if (choice == 2 || choice == 3) 
             {
