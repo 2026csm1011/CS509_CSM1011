@@ -5,10 +5,12 @@
 
 using namespace std;
 
-CSRGraph convertToCSR(const string& filename, bool isWeighted) {
+CSRGraph convertToCSR(const string& filename, bool isWeighted) 
+{
     CSRGraph csr;
     ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         cout << "Error opening file." << endl;
         return csr;
     }
@@ -22,7 +24,8 @@ CSRGraph convertToCSR(const string& filename, bool isWeighted) {
     string line;
     getline(file, line); // consume newline
 
-    for (int i = 0; i < V; ++i) {
+    for (int i = 0; i < V; ++i) 
+    {
         getline(file, line);
         if (line.empty()) { i--; continue; } // skip empty lines
         stringstream ss(line);

@@ -6,7 +6,8 @@
 
 using namespace std;
 
-struct CSRGraph {
+struct CSRGraph 
+{
     int numVertices;
     int numEdges;
     vector<int> row_ptr;

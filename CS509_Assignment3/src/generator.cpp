@@ -79,11 +79,10 @@ void generateConnectedGraph(int V, int E, const string& filename)
 
 int main(int argc, char* argv[]) 
 {
-    // AUTO-GENERATE MODE: If no arguments are passed, create the required assignment files
+    
     if (argc == 1) {
-        cout << "Auto-generating required assignment test files...\n";
+        cout << "Auto-generating test files...\n";
         
-        // Pairs of {V, E} matching the assignment's sparsity requirements (E = ~3V)
         vector<pair<int, int>> required_sizes = 
         {
             {10, 30},
@@ -100,12 +99,11 @@ int main(int argc, char* argv[])
             string filename = "mst_" + to_string(V) + ".txt";
             generateConnectedGraph(V, E, filename);
         }
-        
-        cout << "\nAll required test files generated successfully!\n";
+       
         return 0;
     }
 
-    // MANUAL MODE: If 3 arguments are passed, generate a custom graph
+   
     if (argc == 4) 
     {
         int V = stoi(argv[1]);

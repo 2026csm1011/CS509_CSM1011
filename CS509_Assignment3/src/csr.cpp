@@ -5,14 +5,17 @@
 
 using namespace std;
 
-bool ConvertToCSR(const string& filename, CSRGraph& graph) {
+bool ConvertToCSR(const string& filename, CSRGraph& graph) 
+{
     ifstream infile(filename);
-    if (!infile.is_open()) {
+    if (!infile.is_open()) 
+    {
         cerr << "Error: Could not open input file " << filename << "\n";
         return false;
     }
 
-    if (!(infile >> graph.V >> graph.E)) {
+    if (!(infile >> graph.V >> graph.E)) 
+    {
         cerr << "Error: Invalid graph dimensions.\n";
         return false;
     }
@@ -23,7 +26,8 @@ bool ConvertToCSR(const string& filename, CSRGraph& graph) {
     string line;
     getline(infile, line); // consume newline after V E
     
-    for (int i = 0; i < graph.V; ++i) {
+    for (int i = 0; i < graph.V; ++i) 
+    {
         getline(infile, line);
         if (line.empty()) continue;
         
@@ -31,7 +35,8 @@ bool ConvertToCSR(const string& filename, CSRGraph& graph) {
         int current_node, degree;
         ss >> current_node >> degree;
         
-        for (int j = 0; j < degree; ++j) {
+        for (int j = 0; j < degree; ++j) 
+        {
             int neighbor_node, edge_weight;
             ss >> neighbor_node >> edge_weight;
             adjacency_list[current_node].push_back({neighbor_node, edge_weight});
@@ -44,9 +49,11 @@ bool ConvertToCSR(const string& filename, CSRGraph& graph) {
     graph.values.clear();
 
     int current_edges = 0;
-    for (int u = 0; u < graph.V; ++u) {
+    for (int u = 0; u < graph.V; ++u) 
+    {
         graph.row_ptr[u] = current_edges;
-        for (const auto& edge : adjacency_list[u]) {
+        for (const auto& edge : adjacency_list[u]) 
+        {
             graph.col_idx.push_back(edge.first);
             graph.values.push_back(edge.second);
             current_edges++;

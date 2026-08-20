@@ -7,8 +7,10 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    if (argc < 3) {
+int main(int argc, char* argv[]) 
+{
+    if (argc < 3) 
+    {
         cout << "Error: Missing arguments." << endl;
         cout << "Usage: ./main <algorithm> <filename.txt>" << endl;
         return 1;
@@ -17,9 +19,11 @@ int main(int argc, char* argv[]) {
     string algo = argv[1];
     string filename = argv[2];
 
-    if (algo == "gemm") {
+    if (algo == "gemm") 
+    {
         ifstream file(filename.c_str());
-        if (!file.is_open()) {
+        if (!file.is_open()) 
+        {
             cout << "Error: Invalid or missing input file." << endl;
             return 1;
         }
@@ -28,12 +32,14 @@ int main(int argc, char* argv[]) {
         file >> M >> K >> N;
 
         vector<vector<int>> A(M, vector<int>(K));
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < M; i++) 
+        {
             for (int j = 0; j < K; j++) file >> A[i][j];
         }
 
         vector<vector<int>> B(K, vector<int>(N));
-        for (int i = 0; i < K; i++) {
+        for (int i = 0; i < K; i++) 
+        {
             for (int j = 0; j < N; j++) file >> B[i][j];
         }
         file.close();
@@ -55,7 +61,8 @@ int main(int argc, char* argv[]) {
 
         // Print Simple Output
         cout << "Algorithm: GEMM Simple\nResult matrix:\n";
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < M; i++) 
+        {
             for (int j = 0; j < N; j++) cout << C_simple[i][j] << " ";
             cout << "\n";
         }
@@ -63,7 +70,8 @@ int main(int argc, char* argv[]) {
 
         // Print Blocking Output
         cout << "Algorithm: GEMM Blocking\nResult matrix:\n";
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < M; i++) 
+        {
             for (int j = 0; j < N; j++) cout << C_blocking[i][j] << " ";
             cout << "\n";
         }
@@ -76,20 +84,25 @@ int main(int argc, char* argv[]) {
         // Printing CSR conversion arrays including values
         cout << "--- CSR Conversion Output ---\n";
         cout << "row_ptr: ";
-        for (size_t i = 0; i < graph.row_ptr.size(); i++) {
+        for (size_t i = 0; i < graph.row_ptr.size(); i++) 
+        {
             cout << graph.row_ptr[i] << " ";
         }
         cout << "\ncol_idx: ";
-        for (size_t i = 0; i < graph.col_idx.size(); i++) {
+        for (size_t i = 0; i < graph.col_idx.size(); i++) 
+        {
             cout << graph.col_idx[i] << " ";
         }
         cout << "\nvalues:  ";
-        for (size_t i = 0; i < graph.values.size(); i++) {
+        for (size_t i = 0; i < graph.values.size(); i++) 
+        {
             cout << graph.values[i] << " ";
         }
         cout << endl;
 
-    } else {
+    } 
+    else 
+    {
         cout << "Error: Unknown algorithm option." << endl;
     }
 

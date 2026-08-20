@@ -5,13 +5,15 @@
 
 using namespace std;
 
-int getRandomWeight() {
+int getRandomWeight() 
+{
     int weight = (rand() % 20) + 1; 
     if (rand() % 100 < 5) weight = -weight; // 5% chance of negative edge
     return weight;
 }
 
-void generateBellmanFordGraph(int V, string filename) {
+void generateBellmanFordGraph(int V, string filename) 
+{
     ofstream file(filename.c_str());
     if (!file.is_open()) return;
     int E = V * 2; // Sparse edges[cite: 1]
@@ -24,7 +26,8 @@ void generateBellmanFordGraph(int V, string filename) {
     file.close();
 }
 
-void generateFloydWarshallMatrix(int V, string filename) {
+void generateFloydWarshallMatrix(int V, string filename) 
+{
     ofstream file(filename.c_str());
     if (!file.is_open()) return;
     file << V << "\n";
@@ -39,7 +42,8 @@ void generateFloydWarshallMatrix(int V, string filename) {
     file.close();
 }
 
-void generateNegativeCycleTest(string filename) {
+void generateNegativeCycleTest(string filename) 
+{
     ofstream file(filename.c_str());
     if (!file.is_open()) return;
     file << "3 3\n";
