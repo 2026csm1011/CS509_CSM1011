@@ -30,7 +30,7 @@ void run_assignment2()
 }
 void run_assignment3()
 {
-    cout << "\n>>> Starting Assignment 2...\n\n";
+    cout << "\n>>> Starting Assignment 3..\n\n";
 #ifdef _WIN32    
     system("cd CS509_Assignment3 && .\\assignment3.exe");
 #else
@@ -39,6 +39,18 @@ void run_assignment3()
     
     cout << "\n<<< Returning to Common Wrapper...\n\n";
 }
+void run_assignment4()
+{
+    cout << "\n>>> Starting Assignment 4...\n\n";
+#ifdef _WIN32    
+    system("cd CS509_Assignment4 && .\\assignment4.exe");
+#else
+    system("cd CS509_Assignment4 && ./assignment4");
+#endif
+    
+    cout << "\n<<< Returning to Common Wrapper...\n\n";
+}
+
 int main() {
     int choice;
     
@@ -49,6 +61,7 @@ int main() {
         cout << "1. Run Assignment 1\n";
         cout << "2. Run Assignment 2\n";
         cout << "3. Run Assignment 3 \n";
+        cout << "4. Run Assignment 4 \n";
         cout << "0. Exit\n";
         cout << "---------------------------------\n";
         cout << "Select Assignment: ";
@@ -61,9 +74,12 @@ int main() {
             case 2:
                 run_assignment2();
                 break;   
-             case 3:
+            case 3:
                 run_assignment3();
-                break;       
+                break;  
+            case 4:
+                run_assignment4();
+                break; 
             case 0:
                 cout << "Exiting Common Wrapper...\n";
                 break;

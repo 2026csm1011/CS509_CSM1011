@@ -13,6 +13,9 @@ void vertexColoring(const CSRGraph& graph) {
     std::vector<int> result(V, -1); 
     std::vector<bool> available(V, false);
 
+    
+    auto start = std::chrono::high_resolution_clock::now();
+
     // 1. Compute degrees and order vertices by non-increasing degree (Welsh-Powell)
     std::vector<int> vertices(V);
     std::iota(vertices.begin(), vertices.end(), 0);
@@ -20,15 +23,14 @@ void vertexColoring(const CSRGraph& graph) {
     std::sort(vertices.begin(), vertices.end(), [&](int a, int b) {
         int deg_a = graph.row_ptr[a + 1] - graph.row_ptr[a];
         int deg_b = graph.row_ptr[b + 1] - graph.row_ptr[b];
-        if (deg_a != deg_b) return deg_a > deg_b; // Non-increasing degree
-        return a < b; // Tie-breaker for deterministic output
+        if (deg_a != deg_b) return deg_a > deg_b; 
+        return a < b; 
     });
 
     int colors_used = 0;
 
     // 2. Process vertices in order
     for (int u : vertices) {
-        // Find used colors by neighbors
         for (int i = graph.row_ptr[u]; i < graph.row_ptr[u + 1]; ++i) {
             int neighbor = graph.col_idx[i];
             if (result[neighbor] != -1) {
@@ -36,7 +38,6 @@ void vertexColoring(const CSRGraph& graph) {
             }
         }
 
-        // Assign the smallest color index not currently used by any neighbor
         int color = 0;
         while (color < V && available[color]) {
             color++;
@@ -44,7 +45,6 @@ void vertexColoring(const CSRGraph& graph) {
         result[u] = color;
         colors_used = std::max(colors_used, color + 1);
 
-        // Reset available array for the next vertex
         for (int i = graph.row_ptr[u]; i < graph.row_ptr[u + 1]; ++i) {
             int neighbor = graph.col_idx[i];
             if (result[neighbor] != -1) {
@@ -53,10 +53,12 @@ void vertexColoring(const CSRGraph& graph) {
         }
     }
 
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+
     // Output formatting matching the assignment specification
     std::cout << "Algorithm: Greedy Vertex Coloring\n";
-    
-    // Only print full list if graph is small, prevents freezing on V=50000
     if (V <= 100) {
         std::cout << "Vertex colors:\n";
         for (int i = 0; i < V; ++i) {
@@ -65,34 +67,33 @@ void vertexColoring(const CSRGraph& graph) {
     } else {
         std::cout << "Vertex colors: (Omitted from output for large graphs V > 100)\n";
     }
-    
     std::cout << "Colors used: " << colors_used << "\n";
+    std::cout << "Execution time: " << duration.count() << " ms\n";
 }
 
 void runVertexColoringTask(const std::string& filepath) {
     CSRGraph graph = convertToCSR(filepath, false);
-    auto start = std::chrono::high_resolution_clock::now();
+    
     vertexColoring(graph);
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " ms\n";
 }
 
 // PAGERANK
 void pageRank(const CSRGraph& graph, double damping, double tolerance, int max_iterations) {
     int V = graph.V;
-    std::vector<double> PR(V, 1.0 / V); // All vertices initialized with rank 1/N
+    std::vector<double> PR(V, 1.0 / V); 
     std::vector<double> next_PR(V, 0.0);
     
     int iterations = 0;
     bool converged = false;
+
+   
+    auto start = std::chrono::high_resolution_clock::now();
 
     // Iterative update loop
     while (iterations < max_iterations) {
         std::fill(next_PR.begin(), next_PR.end(), 0.0);
         double dangling_sum = 0.0;
 
-        // Push-based approach: iterate through outgoing edges
         for (int u = 0; u < V; ++u) {
             int out_deg = graph.row_ptr[u + 1] - graph.row_ptr[u];
             if (out_deg > 0) {
@@ -102,7 +103,6 @@ void pageRank(const CSRGraph& graph, double damping, double tolerance, int max_i
                     next_PR[v] += rank_to_distribute;
                 }
             } else {
-                // Outdegree 0 (dangling vertex): distribute rank evenly across all vertices
                 dangling_sum += PR[u];
             }
         }
@@ -121,14 +121,17 @@ void pageRank(const CSRGraph& graph, double damping, double tolerance, int max_i
 
         iterations++;
 
-        // Check tolerance
         if (total_change <= tolerance) {
             converged = true;
             break;
         }
     }
 
-    // Output formatting matching the assignment specification
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    // Output formatting
     std::cout << "Algorithm: PageRank\n";
     std::cout << "Damping: " << damping << "\n";
     
@@ -148,7 +151,6 @@ void pageRank(const CSRGraph& graph, double damping, double tolerance, int max_i
         }
         sum_ranks += PR[i];
         
-        // Tracking the top vertex for the table requirement
         if (PR[i] > max_rank) {
             max_rank = PR[i];
             top_vertex = i;
@@ -159,6 +161,7 @@ void pageRank(const CSRGraph& graph, double damping, double tolerance, int max_i
     std::cout << "Sum of ranks: " << std::fixed << std::setprecision(6) << sum_ranks << "\n";
     std::cout << "Iterations: " << iterations << "\n";
     std::cout << "Converged: " << (converged ? "true" : "false") << "\n";
+    std::cout << "Execution time: " << duration.count() << " ms\n";
 }
 
 void runPageRankTask(const std::string& filepath) {
@@ -167,10 +170,5 @@ void runPageRankTask(const std::string& filepath) {
     
     CSRGraph graph = convertToCSR(filepath, true);
     
-    auto start = std::chrono::high_resolution_clock::now();
     pageRank(graph, damping, tolerance, max_iter);
-    auto end = std::chrono::high_resolution_clock::now();
-    
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " ms\n";
 }
